@@ -1,0 +1,339 @@
+:root {
+    --bg-dark: #0a0a0b;
+    --card-bg: rgba(20, 20, 22, 0.85);
+    --accent-gold: #c5a059;
+    --accent-crimson: #8b0000;
+    --text-main: #e0e0e0;
+    --text-muted: #a0a0a0;
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glow-shadow: 0 0 20px rgba(197, 160, 89, 0.15);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* Background Texture & Grain */
+.background-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
+    opacity: 0.2;
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* Header Styling */
+header {
+    padding: 3rem 10% 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.brand-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--accent-gold);
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.brand-subtitle {
+    font-size: 0.9rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--text-main);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: color 0.3s ease;
+}
+
+nav a:hover {
+    color: var(--accent-gold);
+}
+
+/* Hero & Glassmorphism Card */
+/* Journey Engine V2 Styles */
+.journey-engine {
+    min-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    position: relative;
+}
+
+.room-container {
+    width: 100%;
+    max-width: 1000px;
+    height: 650px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.8);
+}
+
+.room-view {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 1.2s ease-in-out, transform 1.2s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    transform: scale(1.1);
+}
+
+.room-view.active {
+    opacity: 1;
+    z-index: 2;
+    transform: scale(1);
+}
+
+.room-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.85) 100%);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.room-content {
+    position: relative;
+    z-index: 10;
+    max-width: 600px;
+    width: 85%;
+    padding: 3rem;
+    background: rgba(10, 10, 11, 0.7);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--glass-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.room-title {
+    font-family: 'Playfair Display', serif;
+    color: var(--accent-gold);
+    font-size: 2.2rem;
+    margin-bottom: 1.5rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+}
+
+.narrative-text {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+    color: var(--text-main);
+    min-height: 80px;
+}
+
+.room-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Room Specific Backgrounds */
+.foyer { background-image: url('assets/foyer.png'); }
+.labyrinth { background-image: url('assets/labyrinth.png'); }
+.glass-room { background-image: url('assets/glass.png'); }
+.architect-study { background-image: url('assets/study.png'); }
+
+.journey-controls {
+    margin-top: 2rem;
+}
+
+.btn-primary, .btn-secondary {
+    padding: 1rem 2rem;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: none;
+}
+
+.btn-primary {
+    background: var(--accent-gold);
+    color: var(--bg-dark);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(197, 160, 89, 0.3);
+}
+
+.btn-secondary {
+    background: transparent;
+    border: 1px solid var(--accent-gold);
+    color: var(--accent-gold);
+}
+
+.btn-secondary:hover {
+    background: rgba(197, 160, 89, 0.1);
+    transform: translateY(-3px);
+}
+
+/* Shop Preview */
+.shop-preview {
+    padding: 5rem 10%;
+    text-align: center;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.product-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    text-align: left;
+    padding: 0; /* Override glassmorphism padding */
+}
+
+.product-card:hover {
+    transform: translateY(-10px);
+}
+
+.product-image {
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.product-info {
+    padding: 2rem;
+}
+
+.product-info h3 {
+    font-family: 'Playfair Display', serif;
+    margin-bottom: 1rem;
+    color: var(--accent-gold);
+}
+
+.product-desc {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+    height: 60px;
+    overflow: hidden;
+}
+
+.product-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+}
+
+.price {
+    font-weight: 700;
+    color: #fff;
+    font-size: 1.2rem;
+}
+
+.buy-btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.8rem;
+}
+
+.product-placeholder {
+    padding: 4rem;
+    border: 1px dashed var(--text-muted);
+    border-radius: 10px;
+    opacity: 0.5;
+}
+
+/* Footer */
+footer {
+    padding: 4rem 10%;
+    text-align: center;
+    border-top: 1px solid var(--glass-border);
+    color: var(--text-muted);
+}
+
+.footer-tagline {
+    font-size: 0.8rem;
+    margin-top: 1rem;
+    letter-spacing: 2px;
+}
+
+/* Animations */
+.fade-in {
+    animation: fadeIn 0.8s ease forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.support-area {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--glass-border);
+}
+
+.support-link {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+}
+
+.support-link:hover {
+    color: var(--accent-gold);
+}
+
+@media (max-width: 768px) {
+    .brand-title { font-size: 1.8rem; }
+    header { flex-direction: column; gap: 1rem; }
+    .glassmorphism { padding: 2rem; }
+    #prompt-text { font-size: 1.4rem; }
+}

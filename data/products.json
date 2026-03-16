@@ -1,0 +1,26 @@
+[
+    {
+        "id": "tarot-deck-001",
+        "title": "The Macabre Tarot: Original Printable Edition",
+        "price": "14.99",
+        "description": "A high-resolution, printable 78-card deck featuring Lacey's signature dark-macabre aesthetic. Find the heaven in your hell.",
+        "category": "Tarot",
+        "image": "https://images.unsplash.com/photo-1572947225154-1563f044bb71?auto=format&fit=crop&q=80&w=400"
+    },
+    {
+        "id": "joy-guide-001",
+        "title": "The Fire Manual: For When the Architecture Collapses",
+        "price": "9.99",
+        "description": "A raw Winchester Protocol for the fire. No requirements, no fluff. Just a map for the day the stairs lead to a drop.",
+        "category": "Survival",
+        "image": "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&q=80&w=400"
+    },
+    {
+        "id": "twisted-map-001",
+        "title": "The Twisted Map: Digital Survival Journal",
+        "price": "12.50",
+        "description": "An interactive PDF journal designed to map your peaks and drops. The vault for your hidden beauty.",
+        "category": "Journal",
+        "image": "https://images.unsplash.com/photo-1544640808-32ca72ac7f37?auto=format&fit=crop&q=80&w=400"
+    }
+]
