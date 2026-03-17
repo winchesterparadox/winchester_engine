@@ -577,7 +577,33 @@ footer {
     .poem-text { font-size: 1rem; }
 }
 
-/* Community & Sharing */
+/* Lantern Cursor */
+#lantern-cursor {
+    position: fixed;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(197, 160, 89, 0.1) 0%, rgba(0, 0, 0, 0.95) 70%, rgba(0, 0, 0, 1) 100%);
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    mix-blend-mode: soft-light;
+    transition: width 0.3s ease, height 0.3s ease;
+}
+
+body {
+    cursor: none; /* Hide real cursor to favor the lantern experience */
+}
+
+/* Specific elements to show above the shadow */
+.navbar, .btn-primary, .btn-secondary, .btn-maze {
+    position: relative;
+    z-index: 10000;
+}
+
+#room-actions button {
+    margin: 10px;
+}
+
 .btn-maze {
     background: rgba(0, 0, 0, 0.4);
     border: 1px solid var(--glass-border);
@@ -597,6 +623,7 @@ footer {
     color: #fff;
     background: rgba(197, 160, 89, 0.1);
 }
+
 .footer-links {
     display: flex;
     justify-content: center;

@@ -1,9 +1,8 @@
 const roomData = {
     foyer: {
         title: "The Foyer",
-        narrative: "The doors close behind you. The air is heavy, but for the first time in hours, it is quiet. Nobody is looking at you here.",
-        next: "labyrinth",
-        nextText: "Enter the Shadows"
+        narrative: "The doors close behind you. The air is heavy, but for the first time in hours, it is quiet. Which part of the house calls to you tonight?",
+        selection: true
     },
     labyrinth: {
         title: "The Labyrinth",
@@ -32,7 +31,7 @@ const journeyManager = {
     history: [],
 
     nextRoom() {
-        const next = roomData[this.currentRoom].next;
+        const next = roomData[this.currentRoom].next || 'labyrinth';
         this.transitionTo(next);
     },
 
@@ -40,16 +39,16 @@ const journeyManager = {
         const roomView = document.getElementById('current-room');
         const content = document.querySelector('.room-content');
         
-        // CSS Transition trigger
         roomView.style.opacity = '0';
         content.style.opacity = '0';
 
         setTimeout(() => {
-            this.history.push(this.currentRoom);
+            if (this.currentRoom !== roomId) {
+                this.history.push(this.currentRoom);
+            }
             this.currentRoom = roomId;
             this.updateDisplay();
             
-            // Map roomId to CSS class
             const cssClass = roomId === 'glassRoom' ? 'glass-room' : 
                              roomId === 'study' ? 'architect-study' : roomId;
             
@@ -65,7 +64,6 @@ const journeyManager = {
         if (this.history.length === 0) return;
         const prev = this.history.pop();
         this.transitionTo(prev);
-        this.history.pop(); // Remove it from history twice because transitionTo adds it
     },
 
     updateDisplay() {
@@ -76,7 +74,26 @@ const journeyManager = {
 
         actions.innerHTML = '';
 
-        if (data.type === 'maze' && this.currentRoom === 'labyrinth') {
+        if (data.selection) {
+            narrative.textContent = data.narrative;
+            const corridors = [
+                { id: 'grief', label: 'The Grief Chamber' },
+                { id: 'career', label: 'The Career Wing' },
+                { id: 'relationships', label: 'The Relationship Corridor' },
+                { id: 'existential', label: 'The Existential Hall' }
+            ];
+            corridors.forEach(corridor => {
+                const btn = document.createElement('button');
+                btn.className = 'btn-primary';
+                btn.textContent = corridor.label;
+                btn.onclick = () => {
+                    mazeManager.wing = corridor.id;
+                    mazeManager.depth = 0;
+                    this.nextRoom();
+                };
+                actions.appendChild(btn);
+            });
+        } else if (data.type === 'maze' && this.currentRoom === 'labyrinth') {
             mazeManager.render(narrative, actions);
         } else {
             narrative.textContent = data.narrative;
@@ -126,16 +143,46 @@ const journeyManager = {
 const mazeManager = {
     depth: 0,
     requiredDepth: 5,
-    lastDirection: '',
+    wing: 'grief',
     
-    corridors: [
-        "Architect's Task (SIGHT): High on the wall, find 3 small details you've never noticed before. Focus on their shape.",
-        "Architect's Task (TOUCH): Reach out and touch the closest surface. Is it cold? Rough? Smooth? Describe it silently.",
-        "Architect's Task (SOUND): Close your eyes for 5 seconds. Identify two distinct sounds, no matter how faint.",
-        "Architect's Task (PHYSICAL): Tense your shoulders to your ears, then drop them. Feel the weight leave. Turn to progress.",
-        "Architect's Task (COLOR): Scan the room for something exactly the color of blood. Now find something the color of bone.",
-        "Architect's Task (BREATH): Breathe in for four seconds. Hold for four. Out for four. The House breathes with you."
-    ],
+    wingContent: {
+        grief: {
+            tasks: [
+                "GRIEF TASK (MEMORY): Visualize a small candle flame. Imagine the person/thing you lost is safe in that light. Breathe with the flicker.",
+                "GRIEF TASK (SENSES): Find 3 objects in the room you are in that are older than five years. Touch each one and acknowledge their history.",
+                "GRIEF TASK (SOUND): Close your eyes. Find the furthest sound you can hear. Now find the closest (even if it's your own pulse).",
+                "GRIEF TASK (BODY): Inhale for 4 seconds, hold for 4, exhale for 8. Feel the weight of the grief leaving with the breath.",
+                "GRIEF TASK (COLOR): Find something in your room that is the exact color of a shadow. Focus on it until the edges blur."
+            ]
+        },
+        career: {
+            tasks: [
+                "CAREER TASK (LOGIC): List 3 items around you that are not productive. They serve no purpose but to be. Just like you, right now.",
+                "CAREER TASK (PHYSICAL): Tense your hands into fists as hard as you can for 5 seconds. Release. Feel the 'work' leaving your body.",
+                "CAREER TASK (ANCHOR): Find something made of wood or stone. Touch it. It does not care about your deadlines. Be like the stone.",
+                "CAREER TASK (SIGHT): Look at the ceiling. Find a crack, a shadow, or a stain. Study it until it looks like a map to somewhere else.",
+                "CAREER TASK (SOUND): Turn off any extra noise. Listen to the silence of the House. It doesn't want anything from you."
+            ]
+        },
+        relationships: {
+            tasks: [
+                "RELATIONSHIP TASK (SELF): Find a mirror or a reflective surface. Look at your own eyes for 10 seconds. You are the only one you can never lose.",
+                "RELATIONSHIP TASK (SPACE): Identify two boundaries in your room (walls, doors). Acknowledge that you are safe within these lines.",
+                "RELATIONSHIP TASK (TOUCH): Wrap your arms around yourself. Feel the pressure. You are your own constant companion.",
+                "RELATIONSHIP TASK (SENSES): Find 2 things that smell like safety. If there are none, imagine the smell of old books or cold rain.",
+                "RELATIONSHIP TASK (LOGIC): Name 3 things you are grateful for that don't involve another person. Focus on your own autonomy."
+            ]
+        },
+        existential: {
+            tasks: [
+                "EXISTENTIAL TASK (VOID): Stare at the darkest corner of the room. Acknowledge that even in the dark, you are still breathing.",
+                "EXISTENTIAL TASK (SCALE): Look at your hand. Move one finger. Realize the miracle of that movement in a vast, silent universe.",
+                "EXISTENTIAL TASK (SOUND): Hum a single low note for as long as you can. Feel the vibration in your chest. You are an instrument of presence.",
+                "EXISTENTIAL TASK (TIME): Watch a clock or a shadow for 30 seconds without moving. Time passes, but you are the anchor.",
+                "EXISTENTIAL TASK (COLD): Touch something metal or cold. Let the temperature bring you back to the sharp reality of now."
+            ]
+        }
+    },
 
     encounters: [
         { type: 'joy', text: "GROUNDING: You are here. Your feet are on the floor. The floor is solid. You are safe in this moment." },
@@ -143,32 +190,30 @@ const mazeManager = {
     ],
 
     render(narrativeElem, actionsElem) {
-        if (this.depth === 0) {
-            narrativeElem.textContent = roomData.labyrinth.narrative;
-        } else if (this.depth >= this.requiredDepth) {
+        if (this.depth >= this.requiredDepth) {
             narrativeElem.textContent = "A beam of light cuts through the dust. You see a door made of solid, polished glass. You've found the way out.";
             const btnExit = document.createElement('button');
             btnExit.className = 'btn-primary';
             btnExit.textContent = "Enter the Glass Room";
             btnExit.onclick = () => {
-                this.depth = 0; // Reset for next time
+                this.depth = 0;
                 journeyManager.transitionTo('glassRoom');
             };
             actionsElem.appendChild(btnExit);
             return;
-        } else {
-            const randomCorridor = this.corridors[Math.floor(Math.random() * this.corridors.length)];
-            narrativeElem.textContent = `${randomCorridor} (Depth: ${this.depth}/5)`;
-            
-            // Randomly show an encounter detail
-            if (Math.random() > 0.6) {
-                const encounter = this.encounters[Math.floor(Math.random() * this.encounters.length)];
-                const btnEncounter = document.createElement('button');
-                btnEncounter.className = encounter.type === 'pain' ? 'btn-secondary' : 'btn-primary';
-                btnEncounter.textContent = encounter.type === 'pain' ? "The Fire" : "The Rebellion";
-                btnEncounter.onclick = () => journeyManager.showDetail(encounter.text);
-                actionsElem.appendChild(btnEncounter);
-            }
+        }
+
+        const currentTasks = this.wingContent[this.wing].tasks;
+        const task = currentTasks[this.depth % currentTasks.length];
+        narrativeElem.textContent = `${task} (Depth: ${this.depth}/5)`;
+        
+        if (Math.random() > 0.7) {
+            const encounter = this.encounters[Math.floor(Math.random() * this.encounters.length)];
+            const btnEncounter = document.createElement('button');
+            btnEncounter.className = 'btn-primary';
+            btnEncounter.textContent = "The Rebellion";
+            btnEncounter.onclick = () => journeyManager.showDetail(encounter.text);
+            actionsElem.appendChild(btnEncounter);
         }
 
         const directions = ['North', 'East', 'South', 'West'];
@@ -182,9 +227,7 @@ const mazeManager = {
     },
 
     move(direction) {
-        // Prevent going back immediately if we want to be mean, but for now let's just make it progress
         this.depth++;
-        this.lastDirection = direction;
         journeyManager.updateDisplay();
     }
 };
@@ -195,15 +238,14 @@ const ambientManager = {
 
     init() {
         if (!this.audio) {
-            this.audio = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3'); // Using a more stable test link
-            // For production, suggest a local file or a more reliable ambient host
+            this.audio = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-heavy-rain-loop-2393.mp3'); 
             this.audio.loop = true;
-            this.audio.volume = 0.3;
+            this.audio.volume = 0.4;
         }
     },
 
     toggle() {
-        this.init(); // Ensure initialized on user gesture
+        this.init();
         
         if (!this.isPlaying) {
             this.audio.play().then(() => {
@@ -223,6 +265,20 @@ const ambientManager = {
     }
 };
 
+// Lantern Cursor Logic
+const lantern = {
+    init() {
+        const lanternEl = document.createElement('div');
+        lanternEl.id = 'lantern-cursor';
+        document.body.appendChild(lanternEl);
+
+        document.addEventListener('mousemove', (e) => {
+            lanternEl.style.left = e.clientX + 'px';
+            lanternEl.style.top = e.clientY + 'px';
+        });
+    }
+};
+
 function shareEcho(button) {
     const text = button.closest('.whisper-card').querySelector('.whisper-snippet').textContent;
     const shareText = `${text}\n\nWalk with us: ${window.location.origin}`;
@@ -234,20 +290,25 @@ function shareEcho(button) {
             url: window.location.href
         }).catch(err => console.log('Share failed', err));
     } else {
-        navigator.clipboard.writeText(shareText);
+        const el = document.createElement('textarea');
+        el.value = shareText;
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+        
         const originalText = button.textContent;
         button.textContent = "Copied to Clipboard";
         setTimeout(() => button.textContent = originalText, 2000);
     }
 }
 
-// Initial state
 window.addEventListener('load', () => {
     loadProducts();
     ambientManager.init();
+    lantern.init();
 });
 
-// Shop Logic
 async function loadProducts() {
     const shopGrid = document.querySelector('.product-grid');
     if (!shopGrid) return;
