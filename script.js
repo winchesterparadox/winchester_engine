@@ -121,9 +121,54 @@ const journeyManager = {
     }
 };
 
+const ambientManager = {
+    // ... same as before
+    audio: new Audio(),
+    isPlaying: false,
+
+    init() {
+        this.audio.loop = true;
+        this.audio.volume = 0.4;
+        this.audio.src = 'https://assets.mixkit.co/sfx/preview/mixkit-light-rain-loop-2443.mp3';
+    },
+
+    toggle() {
+        if (!this.isPlaying) {
+            this.audio.play();
+            this.isPlaying = true;
+            document.getElementById('ambient-status').textContent = "Atmosphere: On";
+            document.getElementById('btn-ambient').classList.add('active');
+        } else {
+            this.audio.pause();
+            this.isPlaying = false;
+            document.getElementById('ambient-status').textContent = "Atmosphere: Off";
+            document.getElementById('btn-ambient').classList.remove('active');
+        }
+    }
+};
+
+function shareEcho(button) {
+    const text = button.closest('.whisper-card').querySelector('.whisper-snippet').textContent;
+    const shareText = `${text}\n\nWalk with us: ${window.location.origin}`;
+    
+    if (navigator.share) {
+        navigator.share({
+            title: 'An Echo from the Dark',
+            text: shareText,
+            url: window.location.href
+        }).catch(err => console.log('Share failed', err));
+    } else {
+        navigator.clipboard.writeText(shareText);
+        const originalText = button.textContent;
+        button.textContent = "Copied to Clipboard";
+        setTimeout(() => button.textContent = originalText, 2000);
+    }
+}
+
 // Initial state
 window.addEventListener('load', () => {
     loadProducts();
+    ambientManager.init();
 });
 
 // Shop Logic

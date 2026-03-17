@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Echo Chamber | Winchester Paradox</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+</head>
+<body class="echo-page">
+    <div class="background-overlay"></div>
+    
+    <header>
+        <div class="logo-container">
+            <h1 class="brand-title">The Echo Chamber</h1>
+            <p class="brand-subtitle">Ghostly Whispers from the Dark</p>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">The House</a></li>
+                <li><a href="index.html#digital-shop">The Vault</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="echo-main">
+        <section class="confession-vault">
+            <div class="glass-panel submission-card">
+                <h2 class="section-title">Leave a Whisper</h2>
+                <p class="narrative-text">Speak what you saw walking alone tonight. No name. No judgment. Just the truth.</p>
+                
+                <form name="confessions" method="POST" data-netlify="true" class="confession-form">
+                    <textarea name="message" placeholder="Type your paradox here..." required></textarea>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">Release into the Dark</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <section class="whisper-wall">
+            <h2 class="shadow-title">The Whispering Wall</h2>
+            <div id="whisper-container" class="whisper-container">
+                <!-- Example Whispers -->
+                <div class="whisper-card">
+                    <div class="whisper-snippet">"I felt the cold before the shadow moved."</div>
+                    <div class="whisper-footer">
+                        <button class="btn-share" onclick="shareEcho(this)">Share Echo</button>
+                    </div>
+                </div>
+                <div class="whisper-card">
+                    <div class="whisper-snippet">"The silence is louder than the city."</div>
+                    <div class="whisper-footer">
+                        <button class="btn-share" onclick="shareEcho(this)">Share Echo</button>
+                    </div>
+                </div>
+                <div class="whisper-card">
+                    <div class="whisper-snippet">"I am the architect of my own ghosts."</div>
+                    <div class="whisper-footer">
+                        <button class="btn-share" onclick="shareEcho(this)">Share Echo</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Lacey Winchester | The Winchester Paradox</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

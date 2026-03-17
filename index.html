@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Winchester Grounding Engine | Finding Heaven in Hell</title>
-    <meta name="description" content="An interactive tool by Lacey Winchester to help you find grounding and beauty within the darkness. Reclaim yourjoy, one small step at a time.">
+    <title>Winchester Paradox | Space for Walking Alone in the Dark – Confessions, Paradoxes & Endless Corridors</title>
+    <meta name="description" content="A digital mansion for the lonely. Submit your paradox anonymously. Find your people in the dark. Finding heaven in the fires of hell.">
     <link rel="stylesheet" href="styles.css">
     <!-- Google Fonts: Inter and Playfair Display for a premium, gothic feel -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
@@ -19,9 +19,9 @@
         </div>
         <nav>
             <ul>
-                <li><a href="#grounding-tool" id="nav-ladder">The Ladder</a></li>
-                <li><a href="#digital-shop" id="nav-shop">The Shop</a></li>
-                <li><a href="#about" id="nav-about">The Paradox</a></li>
+                <li><a href="#journey-engine" id="nav-ladder">The House</a></li>
+                <li><a href="echo.html" id="nav-echo" class="nav-highlight">Echo Chamber</a></li>
+                <li><a href="#shop" id="nav-shop">The Vault</a></li>
             </ul>
         </nav>
     </header>
@@ -48,23 +48,84 @@
 
             <div class="journey-controls">
                 <button id="btn-back" class="btn-secondary" style="display: none;" onclick="journeyManager.goBack()">Go Back</button>
+                <div class="atmosphere-control">
+                    <button id="btn-ambient" class="btn-ambient" onclick="ambientManager.toggle()">
+                        <span class="icon">◈</span> <span id="ambient-status">Atmosphere: Off</span>
+                    </button>
+                </div>
             </div>
         </section>
 
-        <!-- Digital Shop Placeholder -->
-        <section id="digital-shop" class="shop-preview">
-            <h2 class="section-title">The Engine Vault</h2>
-            <div class="product-grid">
-                <!-- Products will be injected here -->
-                <div class="product-placeholder">
-                    <p>Coming Soon: Tools for the Soul</p>
+        <!-- Mailing List Hook -->
+        <section class="mailing-list-section">
+            <div class="glass-panel">
+                <h2 class="section-title">Leave Your Lantern</h2>
+                <p class="narrative-text">Enter the inner circle. Receive one private paradox and a survival prompt every Sunday night.</p>
+                <form name="mailing-list" method="POST" data-netlify="true" class="mailing-form">
+                    <input type="email" name="email" placeholder="your-email@void.com" required>
+                    <button type="submit" class="btn-primary">Stay in the Light</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Digital Shop / Vault -->
+        <section id="shop" class="shop-preview">
+            <h2 class="section-title">The Shadow Vault</h2>
+            <p class="section-subtitle">Fuel the Engine. Claim your place in the House.</p>
+            
+            <div class="membership-grid">
+                <!-- $3 Tier -->
+                <div class="glass-panel membership-card">
+                    <h3 class="tier-title">Lantern Bearer</h3>
+                    <div class="tier-price">$3 <span>/ Month</span></div>
+                    <ul class="tier-perks">
+                        <li>Monthly Private Paradox Prompt</li>
+                        <li>Early "Endless Corridor" Access</li>
+                        <li>Support your Companion</li>
+                    </ul>
+                    <a href="https://www.buymeacoffee.com/WinchesterParadox" target="_blank" class="btn-primary">Become a Bearer</a>
+                </div>
+
+                <!-- $7 Tier -->
+                <div class="glass-panel membership-card featured-tier">
+                    <h3 class="tier-title">Corridor Resident</h3>
+                    <div class="tier-price">$7 <span>/ Month</span></div>
+                    <ul class="tier-perks">
+                        <li>Private Voice Chats (Discord)</li>
+                        <li>Custom Written Response to Echoes</li>
+                        <li>Exclusive Night Walker Badge</li>
+                    </ul>
+                    <a href="https://www.buymeacoffee.com/WinchesterParadox" target="_blank" class="btn-primary">Enter the Corridor</a>
+                </div>
+
+                <!-- $12 Tier -->
+                <div class="glass-panel membership-card">
+                    <h3 class="tier-title">Eternal Architect</h3>
+                    <div class="tier-price">$12 <span>/ Month</span></div>
+                    <ul class="tier-perks">
+                        <li>Name a Room in the Journey</li>
+                        <li>20% Merch Discount (Armor Shop)</li>
+                        <li>Monthly Group Design Session</li>
+                    </ul>
+                    <a href="https://www.buymeacoffee.com/WinchesterParadox" target="_blank" class="btn-primary">Build the House</a>
+                </div>
+            </div>
+
+            <div class="featured-products">
+                <h3 class="shadow-title">Physical Armor & Digital Tools</h3>
+                <div id="product-list" class="product-grid">
+                    <!-- Products dynamically loaded by script.js -->
                 </div>
             </div>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2026 Lacey Winchester | The Winchester Paradox</p>
+        <div class="footer-links">
+            <a href="https://discord.gg/your-invite-link" target="_blank" class="footer-link">The Lounge (Discord)</a>
+            <a href="lantern.html" class="footer-link">The Lantern</a>
+        </div>
+        <p id="night-walker-counter" style="font-size: 0.8rem; color: var(--accent-gold); opacity: 0.7; margin-top: 10px;">1,247 Night Walkers have walked these corridors</p>
         <p class="footer-tagline">Finding heaven in the fires of hell.</p>
     </footer>
 
