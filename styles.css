@@ -578,6 +578,25 @@ footer {
 }
 
 /* Community & Sharing */
+.btn-maze {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--glass-border);
+    color: var(--text-muted);
+    padding: 0.8rem 1.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 5px;
+}
+
+.btn-maze:hover {
+    border-color: var(--accent-gold);
+    color: #fff;
+    background: rgba(197, 160, 89, 0.1);
+}
 .footer-links {
     display: flex;
     justify-content: center;

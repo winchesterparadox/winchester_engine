@@ -129,19 +129,17 @@ const mazeManager = {
     lastDirection: '',
     
     corridors: [
-        "The air grows colder here. You see a series of mirrors on the left, but none of them show your reflection.",
-        "A long hallway stretching toward a door that seems to move further away with every step.",
-        "The floorboards creak here, sounding like a whisper you can't quite catch.",
-        "You pass a portrait of a woman whose eyes seem to follow you. Is she the architect, or a prisoner?",
-        "The smell of old books and dried lavender hits you. A memory of safety, long since rotted.",
-        "A corridor lined with locked chests. You hear something scratching inside one of them."
+        "Architect's Task (SIGHT): High on the wall, find 3 small details you've never noticed before. Focus on their shape.",
+        "Architect's Task (TOUCH): Reach out and touch the closest surface. Is it cold? Rough? Smooth? Describe it silently.",
+        "Architect's Task (SOUND): Close your eyes for 5 seconds. Identify two distinct sounds, no matter how faint.",
+        "Architect's Task (PHYSICAL): Tense your shoulders to your ears, then drop them. Feel the weight leave. Turn to progress.",
+        "Architect's Task (COLOR): Scan the room for something exactly the color of blood. Now find something the color of bone.",
+        "Architect's Task (BREATH): Breathe in for four seconds. Hold for four. Out for four. The House breathes with you."
     ],
 
     encounters: [
-        { type: 'pain', text: "The weight of everyone you've ever let down sits on your chest like a stone." },
-        { type: 'pain', text: "A shadow flickers. It looks just like the version of you that gave up." },
-        { type: 'joy', text: "You find a single, glowing tooth on the floor. It feels like a trophy of survival." },
-        { type: 'joy', text: "The rain sound outside changes to a melody. Just for a second, you feel seen." }
+        { type: 'joy', text: "GROUNDING: You are here. Your feet are on the floor. The floor is solid. You are safe in this moment." },
+        { type: 'joy', text: "SENSORY: Find something blue. Focus on that blue until it's the only thing in the world." }
     ],
 
     render(narrativeElem, actionsElem) {
@@ -192,22 +190,30 @@ const mazeManager = {
 };
 
 const ambientManager = {
-    // ... same as before
-    audio: new Audio(),
+    audio: null,
     isPlaying: false,
 
     init() {
-        this.audio.loop = true;
-        this.audio.volume = 0.4;
-        this.audio.src = 'https://assets.mixkit.co/sfx/preview/mixkit-light-rain-loop-2443.mp3';
+        if (!this.audio) {
+            this.audio = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3'); // Using a more stable test link
+            // For production, suggest a local file or a more reliable ambient host
+            this.audio.loop = true;
+            this.audio.volume = 0.3;
+        }
     },
 
     toggle() {
+        this.init(); // Ensure initialized on user gesture
+        
         if (!this.isPlaying) {
-            this.audio.play();
-            this.isPlaying = true;
-            document.getElementById('ambient-status').textContent = "Atmosphere: On";
-            document.getElementById('btn-ambient').classList.add('active');
+            this.audio.play().then(() => {
+                this.isPlaying = true;
+                document.getElementById('ambient-status').textContent = "Atmosphere: On";
+                document.getElementById('btn-ambient').classList.add('active');
+            }).catch(err => {
+                console.error("Audio play failed:", err);
+                document.getElementById('ambient-status').textContent = "Click again to wake the house";
+            });
         } else {
             this.audio.pause();
             this.isPlaying = false;
