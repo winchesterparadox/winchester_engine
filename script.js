@@ -8,10 +8,7 @@ const roomData = {
     labyrinth: {
         title: "The Labyrinth",
         narrative: "This is the Labyrinth. A thousand clocks ticking, none of them right. You've been here before, haven't you? Where the world told you that you were broken.",
-        pain: "The memory of a voice that told you that you'd never make it. The heavy chain of expectation.",
-        joy: "The silence. The fact that you are the one walking, not being dragged. A dark joke that only you understand.",
-        next: "glassRoom",
-        nextText: "Look for the Exit"
+        type: "maze"
     },
     glassRoom: {
         title: "The Glass Room",
@@ -77,38 +74,43 @@ const journeyManager = {
         const narrative = document.getElementById('narrative-text');
         const actions = document.getElementById('room-actions');
 
-        narrative.textContent = data.narrative;
         actions.innerHTML = '';
 
-        if (data.pain) {
-            const btnPain = document.createElement('button');
-            btnPain.className = 'btn-secondary';
-            btnPain.textContent = "The Fire";
-            btnPain.onclick = () => this.showDetail(data.pain);
-            actions.appendChild(btnPain);
-        }
+        if (data.type === 'maze' && this.currentRoom === 'labyrinth') {
+            mazeManager.render(narrative, actions);
+        } else {
+            narrative.textContent = data.narrative;
+            
+            if (data.pain) {
+                const btnPain = document.createElement('button');
+                btnPain.className = 'btn-secondary';
+                btnPain.textContent = "The Fire";
+                btnPain.onclick = () => this.showDetail(data.pain);
+                actions.appendChild(btnPain);
+            }
 
-        if (data.joy) {
-            const btnJoy = document.createElement('button');
-            btnJoy.className = 'btn-primary';
-            btnJoy.textContent = "The Rebellion";
-            btnJoy.onclick = () => this.showDetail(data.joy);
-            actions.appendChild(btnJoy);
-        }
+            if (data.joy) {
+                const btnJoy = document.createElement('button');
+                btnJoy.className = 'btn-primary';
+                btnJoy.textContent = "The Rebellion";
+                btnJoy.onclick = () => this.showDetail(data.joy);
+                actions.appendChild(btnJoy);
+            }
 
-        if (data.rebellion) {
-            const btnReb = document.createElement('button');
-            btnReb.className = 'btn-primary';
-            btnReb.textContent = "Reclaim the Hammer";
-            btnReb.onclick = () => this.showDetail(data.rebellion);
-            actions.appendChild(btnReb);
-        }
+            if (data.rebellion) {
+                const btnReb = document.createElement('button');
+                btnReb.className = 'btn-primary';
+                btnReb.textContent = "Reclaim the Hammer";
+                btnReb.onclick = () => this.showDetail(data.rebellion);
+                actions.appendChild(btnReb);
+            }
 
-        const btnNext = document.createElement('button');
-        btnNext.className = 'btn-primary';
-        btnNext.textContent = data.nextText;
-        btnNext.onclick = () => this.nextRoom();
-        actions.appendChild(btnNext);
+            const btnNext = document.createElement('button');
+            btnNext.className = 'btn-primary';
+            btnNext.textContent = data.nextText;
+            btnNext.onclick = () => this.nextRoom();
+            actions.appendChild(btnNext);
+        }
     },
 
     showDetail(text) {
@@ -118,6 +120,74 @@ const journeyManager = {
             narrative.textContent = text;
             narrative.style.opacity = '1';
         }, 300);
+    }
+};
+
+const mazeManager = {
+    depth: 0,
+    requiredDepth: 5,
+    lastDirection: '',
+    
+    corridors: [
+        "The air grows colder here. You see a series of mirrors on the left, but none of them show your reflection.",
+        "A long hallway stretching toward a door that seems to move further away with every step.",
+        "The floorboards creak here, sounding like a whisper you can't quite catch.",
+        "You pass a portrait of a woman whose eyes seem to follow you. Is she the architect, or a prisoner?",
+        "The smell of old books and dried lavender hits you. A memory of safety, long since rotted.",
+        "A corridor lined with locked chests. You hear something scratching inside one of them."
+    ],
+
+    encounters: [
+        { type: 'pain', text: "The weight of everyone you've ever let down sits on your chest like a stone." },
+        { type: 'pain', text: "A shadow flickers. It looks just like the version of you that gave up." },
+        { type: 'joy', text: "You find a single, glowing tooth on the floor. It feels like a trophy of survival." },
+        { type: 'joy', text: "The rain sound outside changes to a melody. Just for a second, you feel seen." }
+    ],
+
+    render(narrativeElem, actionsElem) {
+        if (this.depth === 0) {
+            narrativeElem.textContent = roomData.labyrinth.narrative;
+        } else if (this.depth >= this.requiredDepth) {
+            narrativeElem.textContent = "A beam of light cuts through the dust. You see a door made of solid, polished glass. You've found the way out.";
+            const btnExit = document.createElement('button');
+            btnExit.className = 'btn-primary';
+            btnExit.textContent = "Enter the Glass Room";
+            btnExit.onclick = () => {
+                this.depth = 0; // Reset for next time
+                journeyManager.transitionTo('glassRoom');
+            };
+            actionsElem.appendChild(btnExit);
+            return;
+        } else {
+            const randomCorridor = this.corridors[Math.floor(Math.random() * this.corridors.length)];
+            narrativeElem.textContent = `${randomCorridor} (Depth: ${this.depth}/5)`;
+            
+            // Randomly show an encounter detail
+            if (Math.random() > 0.6) {
+                const encounter = this.encounters[Math.floor(Math.random() * this.encounters.length)];
+                const btnEncounter = document.createElement('button');
+                btnEncounter.className = encounter.type === 'pain' ? 'btn-secondary' : 'btn-primary';
+                btnEncounter.textContent = encounter.type === 'pain' ? "The Fire" : "The Rebellion";
+                btnEncounter.onclick = () => journeyManager.showDetail(encounter.text);
+                actionsElem.appendChild(btnEncounter);
+            }
+        }
+
+        const directions = ['North', 'East', 'South', 'West'];
+        directions.forEach(dir => {
+            const btn = document.createElement('button');
+            btn.className = 'btn-maze';
+            btn.textContent = dir;
+            btn.onclick = () => this.move(dir);
+            actionsElem.appendChild(btn);
+        });
+    },
+
+    move(direction) {
+        // Prevent going back immediately if we want to be mean, but for now let's just make it progress
+        this.depth++;
+        this.lastDirection = direction;
+        journeyManager.updateDisplay();
     }
 };
 
