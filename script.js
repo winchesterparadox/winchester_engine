@@ -303,10 +303,40 @@ function shareEcho(button) {
     }
 }
 
+// Ritual Countdown Logic
+const ritualTimer = {
+    update() {
+        const now = new Date();
+        const nextSunday = new Date();
+        nextSunday.setDate(now.getDate() + (7 - now.getDay()) % 7);
+        nextSunday.setHours(23, 59, 59, 0);
+
+        if (now > nextSunday) {
+            nextSunday.setDate(nextSunday.getDate() + 7);
+        }
+
+        const diff = nextSunday - now;
+        const hours = Math.floor((diff / (1000 * 60 * 60)));
+        const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+        const clock = document.getElementById('countdown-clock');
+        if (clock) {
+            clock.textContent = `${hours}h ${mins}m ${secs}s`;
+        }
+    },
+
+    start() {
+        this.update();
+        setInterval(() => this.update(), 1000);
+    }
+};
+
 window.addEventListener('load', () => {
     loadProducts();
     ambientManager.init();
     lantern.init();
+    ritualTimer.start();
 });
 
 async function loadProducts() {

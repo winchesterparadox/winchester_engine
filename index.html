@@ -16,6 +16,7 @@
         <div class="logo-container">
             <h1 id="main-title" class="brand-title">Lacey Winchester</h1>
             <p class="brand-subtitle">The Paradox Engineer</p>
+            <div id="ritual-timer" class="ritual-timer">Next Lantern Lighting: <span id="countdown-clock">--:--:--</span></div>
         </div>
         <nav>
             <ul>
@@ -56,11 +57,34 @@
             </div>
         </section>
 
-        <!-- Mailing List Hook -->
+        <!-- The "Free Taste" Paradox Section -->
+        <section class="paradox-preview">
+            <div class="glass-panel text-center">
+                <h2 class="section-title">A Sample of the Dark</h2>
+                <p class="section-subtitle">A glimpse into what lies behind the Architect's door.</p>
+                <div class="preview-card">
+                    <h3 class="preview-title">The Paradox of the Unread Message</h3>
+                    <p class="narrative-text">"The longer you wait to reply, the more the silence becomes a physical weight. It is the relief of being ignored, coupled with the terror of being forgotten. We build monuments out of our own avoidance."</p>
+                    <p class="text-muted small">Previously shared: Sunday, March 8th</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mailing List Hook & Archive -->
         <section class="mailing-list-section">
             <div class="glass-panel">
                 <h2 class="section-title">Leave Your Lantern</h2>
-                <p class="narrative-text">Enter the inner circle. Receive one private paradox and a survival prompt every Sunday night.</p>
+                <p class="narrative-text">Enter the inner circle. Receive one **Private Paradox** (a targeted meditation) and a **Survival Prompt** (a tactile grounding exercise) every Sunday night.</p>
+                
+                <div class="archive-snippet">
+                    <p class="archive-title">Recently in the Corridors:</p>
+                    <ul class="archive-list">
+                        <li>◈ The Architecture of Dread</li>
+                        <li>◈ The Ghost in the Foyer</li>
+                        <li>◈ Mirrors without Glass</li>
+                    </ul>
+                </div>
+
                 <form name="mailing-list" method="POST" data-netlify="true" class="mailing-form">
                     <input type="email" name="email" placeholder="your-email@void.com" required>
                     <button type="submit" class="btn-primary">Stay in the Light</button>
@@ -113,6 +137,7 @@
 
             <div class="featured-products">
                 <h3 class="shadow-title">Physical Armor & Digital Tools</h3>
+                <div class="vault-status">Status: The Vault is currently sealed. <strong>Opening Fall 2026.</strong></div>
                 <div id="product-list" class="product-grid">
                     <!-- Products dynamically loaded by script.js -->
                 </div>
